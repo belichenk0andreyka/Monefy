@@ -1,15 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { BrowserRouter as Router } from "react-router-dom"
+import { renderRoutes } from "react-router-config"
 
-import MyImage from 'assets/dog.jpeg';
+import routes from 'routes/configRoutes';
+import rootReducer from 'store/reducers/rootReducer';
+
 import './index.less';
+
+const store = createStore(rootReducer, composeWithDevTools());
 
 const App = () => {
     return (
-        <div>
-            <div>Welcome to my-webpack-react-starter</div>
-            <img src={MyImage} />
-        </div>
+        <Provider store={store}>
+            <Router>
+                {renderRoutes(routes)}
+            </Router>
+        </Provider>
     );
 };
 
