@@ -44,7 +44,6 @@ const request = ({
         data,
     })
         .then((response) => {
-            console.log(response);
             return response;
         });
 };

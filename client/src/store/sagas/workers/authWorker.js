@@ -7,23 +7,16 @@ import { notificationHelper } from 'helpers/notifications';
 export function* authWorker (action) {
     const { email, password } = action.payload;
     try {
-        console.log(action.payload);
         const request = yield call(() => api.authorization.auth({ email, password }));
-        console.log(request);
         if (request.data.token) {
-            console.log('нормально авторизовался');
             notificationHelper(
                 'Success',
                 'Registration completed successfully',
                 'success'
             );
-            history.push('/register');
+            history.push('/main');
         } else {
-            notificationHelper(
-                'Error',
-                'User already exists',
-                'error'
-            );
+            notificationHelper('Error', request.data.msg,'error');
         }
     } catch (error) {
         notificationHelper(

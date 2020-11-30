@@ -16,11 +16,7 @@ export function* registerWorker (action) {
             );
             history.push('/');
         } else {
-            notificationHelper(
-                'Error',
-                'User already exists',
-                'error'
-            );
+            notificationHelper('Error', request.data.msg,'error');
         }
     } catch (error) {
         notificationHelper(
