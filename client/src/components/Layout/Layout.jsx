@@ -1,14 +1,30 @@
 import React from 'react';
-import { renderRoutes } from "react-router-config"
+import ReduxToastr from 'react-redux-toastr'
+import { Route, Switch } from 'react-router-dom';
 
-import routes from 'routes/configRoutes';
+import AuthReg from 'components/AuthReg';
+import MainPage from 'components/MainPage';
+
+import './layout.less';
 
 const Layout = () => {
     return(
-        <>
-            <div>Layout</div>
-            {renderRoutes(routes)}
-        </>
+        <div className='layout'>
+            <ReduxToastr
+                timeOut={4000}
+                newestOnTop={false}
+                preventDuplicates
+                position="top-left"
+                getState={(state) => state.toastr} // This is the default
+                transitionIn="fadeIn"
+                transitionOut="fadeOut"
+                progressBar
+                closeOnToastrClick/>
+            <Switch>
+                <Route path="/"><AuthReg /></Route>
+                <Route path="/main"><MainPage /></Route>
+            </Switch>
+        </div>
     );
 }
 

@@ -33,7 +33,8 @@ router.post('/',
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({errors: errors.array()})
+            // return res.status(400).json({errors: errors.array()})
+            return res.status(200).json({ msg: 'You are enter invalid data' })
         }
 
         const { email, password } = req.body;
@@ -43,13 +44,15 @@ router.post('/',
 
             // See if user exists
             if (!user) {
-                return res.status(400).json({errors: [{msg: 'Invalid credentials'}]});
+                // return res.status(400).json({errors: [{msg: 'Invalid credentials'}]});
+                return res.status(200).json({ msg: 'Invalid credentials' });
             }
 
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (!isMatch) {
-                return res.status(400).json({errors: [{msg: 'Invalid credentials'}]});
+                // return res.status(400).json({errors: [{msg: 'Invalid credentials'}]});
+                return res.status(200).json({ msg: 'Invalid credentials' });
             }
 
             const payload = {

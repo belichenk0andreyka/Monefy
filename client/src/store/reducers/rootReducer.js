@@ -1,8 +1,13 @@
 import { combineReducers } from 'redux'
-import namesReducer from 'store/reducers/namesReducer';
+import { connectRouter } from 'connected-react-router'
+import {reducer as toastrReducer} from 'react-redux-toastr'
 
-const rootReducer = combineReducers({
-    name: namesReducer
+import uiReducer from 'store/reducers/uiReducer';
+
+const rootReducer = (history) => combineReducers({
+    ui: uiReducer,
+    toastr: toastrReducer,
+    router: connectRouter(history),
 })
 
 export default rootReducer;

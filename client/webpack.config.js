@@ -7,6 +7,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
+        publicPath: '/'
     },
     resolve: {
         extensions: ['.js', '.jsx'],
@@ -20,6 +21,10 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+            {
                 test: /\.less$/,
                 use: [
                     { loader: 'style-loader' },
@@ -28,10 +33,16 @@ module.exports = {
                 ],
             },
             {
-                test: /\.(png|jpe?g|gif)$/,
-                loader: 'url-loader?limit=10000&name=img/[name].[ext]'
-            }
+                test: /\.(png|jpe?g|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                    name: '[path][name].[ext]',
+                },
+            },
         ]
+    },
+    devServer: {
+        historyApiFallback: true,
     },
     plugins: [
         new HtmlWebpackPlugin({
