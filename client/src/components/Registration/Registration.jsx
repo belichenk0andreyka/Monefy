@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import InputAuth from 'components/AuthReg/InputAuth';
+import InputAuth from 'components/InputAuth';
 import { validateInputs } from 'helpers/registerHelper';
 import { notificationHelper } from 'helpers/notifications';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import InputAuth from 'components/AuthReg/InputAuth';
+import InputAuth from 'components/InputAuth';
 import { validateInputsAuth } from 'helpers/registerHelper';
 import { notificationHelper } from 'helpers/notifications';
 
@@ -58,7 +58,7 @@ const Authorization = ({ authUser }) => {
             </div>
             <div className='auth-buttons__container'>
                 <div className='buttons-container'>
-                    <Link className='button-container__btn' to='/register'>Register</Link>
+                    <Link className='button-container__btn' to='/registration'>Register</Link>
                 </div>
                 <div className='buttons-container'>
                     <button

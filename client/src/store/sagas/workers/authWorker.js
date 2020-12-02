@@ -1,14 +1,19 @@
-import { call } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
+
+import Cookies from 'js-cookie'
 
 import { history } from 'index';
 import api from 'api/apiResources';
 import { notificationHelper } from 'helpers/notifications';
+import { authUserSuccess } from 'store/actions/authActions';
 
 export function* authWorker (action) {
     const { email, password } = action.payload;
     try {
         const request = yield call(() => api.authorization.auth({ email, password }));
         if (request.data.token) {
+            yield put(authUserSuccess(request.data.token));
+            Cookies.set('token', request.data.token);
             notificationHelper(
                 'Success',
                 'Registration completed successfully',

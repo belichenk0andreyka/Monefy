@@ -2,8 +2,11 @@ import React from 'react';
 import ReduxToastr from 'react-redux-toastr'
 import { Route, Switch } from 'react-router-dom';
 
-import AuthReg from 'components/AuthReg';
 import MainPage from 'components/MainPage';
+import Authorization from 'components/Authorization';
+import Registration from 'components/Registration';
+import WrapAuthReg from 'components/WrapAuthReg';
+import PrivateRoute from 'helpers/PrivateRoute';
 
 import './layout.less';
 
@@ -15,14 +18,15 @@ const Layout = () => {
                 newestOnTop={false}
                 preventDuplicates
                 position="top-left"
-                getState={(state) => state.toastr} // This is the default
+                getState={(state) => state.toastr}
                 transitionIn="fadeIn"
                 transitionOut="fadeOut"
                 progressBar
-                closeOnToastrClick/>
+                closeOnToastrClick />
             <Switch>
-                <Route path="/"><AuthReg /></Route>
-                <Route path="/main"><MainPage /></Route>
+                <Route path="/" exact={true}><WrapAuthReg><Authorization /></WrapAuthReg></Route>
+                <Route path="/registration"><WrapAuthReg><Registration /></WrapAuthReg></Route>
+                <PrivateRoute path="/main" component={() => <MainPage />} />
             </Switch>
         </div>
     );

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import Authorization from 'components/AuthReg/Authorization/Authorization';
+import Authorization from 'components/Authorization/Authorization';
 import { authUser } from 'store/actions/authActions';
 
 const mapStateToProps = (state) => ({
