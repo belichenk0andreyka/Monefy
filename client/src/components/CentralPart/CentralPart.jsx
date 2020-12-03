@@ -1,10 +1,16 @@
 import React from 'react';
 
+import PieChart from 'components/PieChart';
+import PieChartButtons from 'components/PieChartButtons';
+
 import './centralPart.less';
 
 const CentralPart = () => {
     return (
-        <div className='centralPart' />
+        <div className='centralPart'>
+            <PieChart />
+            <PieChartButtons />
+        </div>
     );
 }
 
