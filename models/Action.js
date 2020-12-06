@@ -17,6 +17,10 @@ const ActionSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    description: {
+        type: String,
+        default: '',
+    },
     date: {
         type: Date,
         default: Date.now,

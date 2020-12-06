@@ -20,7 +20,10 @@ export default class ApiClient {
             data: payload,
         });
     }
-    post (requestUrl, payload = {}) {
+    post (requestUrl, payload = {}, token) {
+        if (token) {
+            axios.defaults.headers.post['x-auth-token'] = token;
+        }
         return request({
             url: `${this.prefix}${requestUrl}`,
             method: 'post',

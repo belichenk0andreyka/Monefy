@@ -2,13 +2,13 @@ import React from 'react';
 
 import './pieChartButtons.less'
 
-const PieChartButtons = () => {
+const PieChartButtons = (props) => {
     return (
         <div className='pieChartButtons-wrapper'>
-            <div className='pieChartButtons-remove'>
+            <div className='pieChartButtons-remove' onClick={() => props.openModal(false)}>
                 <span>&ndash;</span>
             </div>
-            <div className='pieChartButtons-add'>
+            <div className='pieChartButtons-add' onClick={() => props.openModal(true)}>
                 <span>+</span>
             </div>
         </div>
