@@ -8,7 +8,10 @@ import CentralPart from 'components/CentralPart';
 
 import './mainPage.less';
 
-const MainPage = () => {
+const MainPage = (props) => {
+    React.useEffect(() => {
+        props.getRangeDate();
+    }, []);
     return(
         <div className='main'>
             <Header />

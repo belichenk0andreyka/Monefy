@@ -2,11 +2,12 @@ import { all } from 'redux-saga/effects';
 
 import { authWatcher } from 'store/sagas/watchers/authWatchers';
 import { registerWatcher } from 'store/sagas/watchers/registerWatcher';
-import { buySellWatcher, sendBuySellWatcher } from 'store/sagas/watchers/buySellWatchers';
+import { buySellWatcher, sendBuySellWatcher, getDateRange } from 'store/sagas/watchers/buySellWatchers';
 
 export default function* rootSaga() {
     yield all([
         authWatcher(),
+        getDateRange(),
         buySellWatcher(),
         registerWatcher(),
         sendBuySellWatcher(),

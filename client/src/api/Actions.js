@@ -5,4 +5,7 @@ export default class Actions extends Base {
     addAction (data, token) {
         return this.apiClient.post(config.actions, data, token);
     }
+    getDateRange (token) {
+        return this.apiClient.get(config.rangeDate, {}, {}, token);
+    }
 }

@@ -54,4 +54,31 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
+// @route   GET api/actions/rangeDate
+// @desc    Get min and max dates
+// @access  Private
+
+router.get('/rangeDate', auth, async (req, res) => {
+    try {
+        const rangeDate = await Action.aggregate([
+            {
+                $match: {
+                    user: mongoose.Types.ObjectId(req.user.id),
+                }
+            },
+            {
+                "$group": {
+                    "_id": null,
+                    "maxDate": { "$max": "$date" },
+                    "minDate": { "$min": "$date" }
+                }
+            }
+        ]);
+        return res.status(200).json(rangeDate[0]);
+    } catch (e) {
+        console.log(e.message);
+        res.status(500).send('Server Error')
+    }
+});
+
 module.exports = router;

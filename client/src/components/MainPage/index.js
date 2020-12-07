@@ -1,3 +1,10 @@
-import MainPage from 'components/MainPage/MainPage';
+import { connect } from 'react-redux';
 
-export default MainPage;
+import MainPage from 'components/MainPage/MainPage';
+import { getDateRange } from 'store/actions/buySellActions';
+
+const mapDispatchToProps = (dispatch) => ({
+    getRangeDate: () => dispatch(getDateRange()),
+});
+
+export default connect(null, mapDispatchToProps)(MainPage);

@@ -1,5 +1,8 @@
-import {call, put, select} from "redux-saga/effects";
+import { call, put, select } from 'redux-saga/effects';
+import { includes } from 'lodash';
+
 import { getToken } from 'store/seletors/userSelectors';
+import { getDateRangeSuccess } from 'store/actions/buySellActions';
 import { validateAction } from 'helpers/actionHelper';
 import api from 'api/apiResources';
 import { closeModal } from 'store/actions/uiActions';
@@ -32,5 +35,20 @@ export function* sendAction (action) {
                 'error'
             );
         }
+    }
+}
+
+export function* getDateRangeWorker () {
+    const token = yield select(state => getToken(state));
+    const request = yield call(() => api.action.getDateRange(token));
+    if (includes(Object.keys(request), 'data')) {
+        console.log();
+        yield put(getDateRangeSuccess(request.data))
+    } else {
+        notificationHelper(
+            'Error',
+            'Failed to get dates',
+            'error'
+        );
     }
 }

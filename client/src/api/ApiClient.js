@@ -5,7 +5,10 @@ export default class ApiClient {
         axios.defaults.headers.post['Accept'] = '*/*';
         this.prefix = prefix;
     }
-    get (requestUrl, payload = {}, params) {
+    get (requestUrl, payload = {}, params, token) {
+        if (token) {
+            axios.defaults.headers.get['x-auth-token'] = token;
+        }
         return request({
             url: `${this.prefix}${requestUrl}`,
             method: 'get',
