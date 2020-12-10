@@ -11,6 +11,8 @@ import {notificationHelper} from "../../../helpers/notifications";
 
 export function* getActions (action) {
     console.log(action);
+    const token = yield select(state => getToken(state))
+    const request = yield call(() => api.action.getActionsByDate(action.payload, token));
 }
 
 export function* sendAction (action) {

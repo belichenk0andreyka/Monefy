@@ -49,7 +49,8 @@ export const getDateRangeArray = (rangeDate) => {
         const months = [];
         while (minDate.isSameOrBefore(maxDate)) {
             months.push({
-                date: minDate,
+                startDate: minDate.format(),
+                finishDate: moment(minDate).set('date', moment(minDate).daysInMonth()).format(),
                 dateFormat: minDate.format('MMMM'),
             });
             minDate.add(1, 'months');

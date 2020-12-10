@@ -8,4 +8,7 @@ export default class Actions extends Base {
     getDateRange (token) {
         return this.apiClient.get(config.rangeDate, {}, {}, token);
     }
+    getActionsByDate (data, token) {
+        return this.apiClient.get(config.actions, {}, data, token);
+    }
 }

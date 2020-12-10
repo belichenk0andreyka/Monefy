@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const _ = require('lodash');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator/check');
@@ -38,16 +39,20 @@ router.post('/', [auth, [
 
 router.get('/', auth, async (req, res) => {
     try {
-        console.log(mongoose.Types.ObjectId(req.user.id));
+        const { startDate, finishDate } = req.query;
         const actions = await Action.find({
             user: mongoose.Types.ObjectId(req.user.id),
-            date: {$gte: '2014-12-06T17:44:40.423+00:00', $lt: Date.now()},
+            date: {$gte: startDate, $lt: finishDate},
         });
-        console.log(actions);
-        // const newAction = { type, price, category, user: req.user.id, description };
-        // const action = new Action(newAction);
-        // const saveAction = await action.save();
-        // res.json(saveAction);
+        const sendObj = {categories: {}, chartData: {}};
+        const arrayOfCategories = _.sortedUniq(actions.map(item => item.category));
+        arrayOfCategories.forEach(uniq => {
+            sendObj.categories[uniq] = actions.filter(action => action.category === uniq && !action.type);
+            sendObj.chartData[uniq] = _.reduce(actions.filter(action => action.category === uniq && !action.type), function(sum, n) {
+                return sum + n.price;
+            }, 0)
+        });
+        res.json(sendObj);
     } catch (e) {
         console.log(e.message);
         res.status(500).send('Server Error')
