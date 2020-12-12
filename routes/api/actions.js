@@ -44,7 +44,7 @@ router.get('/', auth, async (req, res) => {
             user: mongoose.Types.ObjectId(req.user.id),
             date: {$gte: startDate, $lt: finishDate},
         });
-        const sendObj = {categories: {}, chartData: {}};
+        const sendObj = {categories: {}, chartData: {}, financeInfo: {}};
         const arrayOfCategories = _.sortedUniq(actions.map(item => item.category));
         arrayOfCategories.forEach(uniq => {
             sendObj.categories[uniq] = actions.filter(action => action.category === uniq && !action.type);
@@ -52,6 +52,12 @@ router.get('/', auth, async (req, res) => {
                 return sum + n.price;
             }, 0)
         });
+        sendObj.financeInfo = {
+            consumption: _.reduce(sendObj.chartData, function (result, value) {
+                return result + value;
+            }, 0),
+            profit: 100,
+        }
         res.json(sendObj);
     } catch (e) {
         console.log(e.message);

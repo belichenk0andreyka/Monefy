@@ -10,15 +10,15 @@ const RangeMonths = (props) => {
     const [activeAction, setActiveAction] = React.useState({});
     const scrollBlock = React.createRef();
     const ranges = getDateRangeArray(props.dateRange);
-    React.useEffect(() => {
-        console.log(scrollBlock.current.childNodes);
-        const arrayElement = Array.from(scrollBlock.current.childNodes);
-        console.log(arrayElement);
-        if (scrollBlock.current.childNodes.length) {
-            const elements = scrollBlock.current.childNodes;
-            scrollBlock.current.scrollLeft += elements[elements.length - 1].offsetLeft;
-        }
-    }, [Array.from(get(scrollBlock.current, ['childNodes'], [])).length])
+    // React.useEffect(() => {
+    //     console.log(scrollBlock.current.childNodes);
+    //     const arrayElement = Array.from(scrollBlock.current.childNodes);
+    //     console.log(arrayElement);
+    //     if (scrollBlock.current.childNodes.length) {
+    //         const elements = scrollBlock.current.childNodes;
+    //         scrollBlock.current.scrollLeft += elements[elements.length - 1].offsetLeft;
+    //     }
+    // }, [Array.from(get(scrollBlock.current, ['childNodes'], [])).length])
     // const scroll = () => {
     //     const elements = scrollBlock.current.childNodes;
     //     console.log(elements[elements.length - 1].offsetLeft);
@@ -28,7 +28,6 @@ const RangeMonths = (props) => {
         setActiveAction(action.dateFormat);
         const { startDate, finishDate } = action;
         props.getActionsByDate({ startDate, finishDate });
-
     }
     return (
         <div className='rangeMonth' ref={scrollBlock}>

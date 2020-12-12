@@ -60,3 +60,8 @@ export const getDateRangeArray = (rangeDate) => {
         return [];
     }
 };
+
+export const getDefaultMonth = () => ({
+    startDate: moment().set('date', 1).format(),
+    finishDate: moment().set('date', moment().daysInMonth()).format(),
+})

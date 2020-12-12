@@ -8,7 +8,7 @@ export const MODAL_TYPES = {
     ACTION_MODAL_CREATE: 'modalActionCreate',
 };
 
-export const CATEGORIES = {
+export const CATEGORIES_EXPENSE = {
     FOOD: 'food',
     CAFE: 'cafe',
     CONNECTION: 'connection',
@@ -17,4 +17,10 @@ export const CATEGORIES = {
     BILL: 'bill',
     HEALTH: 'health',
     TRANSPORT: 'transport',
+};
+
+export const CATEGORIES_PROFIT = {
+    SALARY: 'salary',
+    SAVING: 'saving',
+    DEPOSIT: 'deposit',
 };

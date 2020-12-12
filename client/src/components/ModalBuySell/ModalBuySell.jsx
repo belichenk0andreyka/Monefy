@@ -4,7 +4,10 @@ import moment from 'moment';
 import { Modal } from 'antd';
 import classNames from 'classnames';
 
-import { CATEGORIES } from 'constants/constants';
+import {
+    CATEGORIES_PROFIT,
+    CATEGORIES_EXPENSE,
+} from 'constants/constants';
 
 import './modalBuySell.less'
 
@@ -27,6 +30,13 @@ const ModalBuySell = (props) => {
     };
     const handleChangeInputDescription = event => setValueInputs(prev => ({...prev, description: event.target.value}))
     const modalTitle = props.modalInfo.type ? 'Income' : 'Expense';
+    React.useEffect(() => {
+        if (!props.isOpen) {
+            setActiveCategory('');
+            setValueInputs(inputDefaultValues);
+        }
+    }, [props.isOpen]);
+    const CATEGORIES = props.modalInfo.type ? CATEGORIES_PROFIT : CATEGORIES_EXPENSE;
     return (
         <Modal
             title={`New ${modalTitle}`}

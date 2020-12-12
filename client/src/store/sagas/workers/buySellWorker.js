@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 import { includes } from 'lodash';
 
 import { getToken } from 'store/seletors/userSelectors';
-import { getDateRangeSuccess } from 'store/actions/buySellActions';
+import { getDateRangeSuccess, getActionsSuccess, sendActionSuccess } from 'store/actions/buySellActions';
 import { validateAction } from 'helpers/actionHelper';
 import api from 'api/apiResources';
 import { closeModal } from 'store/actions/uiActions';
@@ -10,9 +10,17 @@ import {MODAL_TYPES} from "../../../constants/constants";
 import {notificationHelper} from "../../../helpers/notifications";
 
 export function* getActions (action) {
-    console.log(action);
     const token = yield select(state => getToken(state))
     const request = yield call(() => api.action.getActionsByDate(action.payload, token));
+    if (request.data) {
+        yield put(getActionsSuccess(request.data));
+    } else {
+        notificationHelper(
+            'Error',
+            `Failed to get your info about consumptions and profits`,
+            'error'
+        );
+    }
 }
 
 export function* sendAction (action) {
@@ -24,6 +32,7 @@ export function* sendAction (action) {
         const request = yield call(() => api.action.addAction(action, token));
         const typeAction = type ? 'income' : 'expense';
         if (request.data._id) {
+            yield put(sendActionSuccess(request.data))
             yield put(closeModal(MODAL_TYPES.ACTION_MODAL_CREATE));
             notificationHelper(
                 'Success',
