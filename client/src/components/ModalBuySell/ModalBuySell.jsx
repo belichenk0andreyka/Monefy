@@ -20,7 +20,7 @@ const ModalBuySell = (props) => {
     const [activeCategory, setActiveCategory] = React.useState('');
     const [inputValues, setValueInputs] = React.useState(inputDefaultValues);
     const handleClickOk = () => props.sendAction({ ...inputValues, category: activeCategory, type: props.modalInfo.type });
-    const handleClickCancel = () =>  props.closeModal();
+    const handleClickCancel = () => props.closeModal();
     const handleSetActiveCategory = (event) => {
         if (event.target.id === activeCategory) setActiveCategory('');
         else setActiveCategory(event.target.id);

@@ -6,6 +6,7 @@ export const validateRegistrationSignIn = {
 
 export const MODAL_TYPES = {
     ACTION_MODAL_CREATE: 'modalActionCreate',
+    ADD_EXPENSE_MODAL: 'addExpenseModal',
 };
 
 export const CATEGORIES_EXPENSE = {

@@ -8,7 +8,11 @@ import {
 
 const initialState = {
     dateRange: {},
-    actionsData: {},
+    actionsData: {
+        expenses: {},
+        income: {},
+        financeInfo: {},
+    },
 };
 
 const actionsReducer = (state = initialState, action) => {
@@ -19,8 +23,9 @@ const actionsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 actionsData: {
-                    ...action.payload,
-                    categories: parseCategories(action.payload.categories),
+                    expenses: { ...action.payload.expenses, categories: parseCategories(action.payload.expenses.categories) },
+                    income: { ...action.payload.income, categories: parseCategories(action.payload.income.categories) },
+                    financeInfo: action.payload.financeInfo,
                 }
             };
         case SEND_ACTION_SUCCESS:
@@ -34,23 +39,30 @@ const actionsReducer = (state = initialState, action) => {
 }
 
 const parseOneAction = (state, payload) => {
-    console.log(payload);
-    if (Object.keys(state.actionsData.categories).includes(payload.category)) {
-        const returnObj =  {
-            categories: {
-                ...state.actionsData.categories,
-                [payload.category]: {
-                    ...state.actionsData.categories[payload.category],
-                    [payload._id]: payload}
+    if (payload.type) {
+        return {
+            ...state.actionsData,
+            income: {
+                categories: {
+                    ...state.actionsData.income.categories,
+                    [payload.category]: { ...state.actionsData.income.categories[payload.category], [payload._id]: payload }},
             },
-            chartData: {
-                ...state.actionsData.chartData,
-                [payload.category]: Number([state.actionsData.chartData[payload.category]]) + payload.price,
+            financeInfo: {...state.actionsData.financeInfo, profit: state.actionsData.financeInfo.profit + payload.price}
+        };
+    } else if (!payload.type) {
+        return {
+            ...state.actionsData,
+            expenses: {
+                categories: {
+                    ...state.actionsData.expenses.categories,
+                    [payload.category]: { ...state.actionsData.expenses.categories[payload.category], [payload._id]: payload }},
+                chartData: {
+                    ...state.actionsData.expenses.chartData,
+                    [payload.category]: Number([state.actionsData.expenses.chartData[payload.category]]) + payload.price,
+                },
             },
             financeInfo: {...state.actionsData.financeInfo, consumption: state.actionsData.financeInfo.consumption + payload.price}
-        }
-        console.log(returnObj);
-        return returnObj;
+        };
     }
 }
 

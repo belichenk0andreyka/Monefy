@@ -19,7 +19,15 @@ export const getIsOpenCreateModalAction = createSelector(
     getAllModals,
     state => state.includes(MODAL_TYPES.ACTION_MODAL_CREATE),
 )
+export const getIsOpenAddExpenseModal = createSelector(
+    getAllModals,
+    state => state.includes(MODAL_TYPES.ADD_EXPENSE_MODAL),
+)
 export const getModalInfoActionCreate = createSelector(
     getAllModalsInfo,
     state => get(state, MODAL_TYPES.ACTION_MODAL_CREATE, {}),
+)
+export const getModalInfoAddExpense = createSelector(
+    getAllModalsInfo,
+    state => get(state, MODAL_TYPES.ADD_EXPENSE_MODAL, {}),
 )

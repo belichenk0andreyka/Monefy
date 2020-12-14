@@ -44,19 +44,27 @@ router.get('/', auth, async (req, res) => {
             user: mongoose.Types.ObjectId(req.user.id),
             date: {$gte: startDate, $lt: finishDate},
         });
-        const sendObj = {categories: {}, chartData: {}, financeInfo: {}};
-        const arrayOfCategories = _.sortedUniq(actions.map(item => item.category));
-        arrayOfCategories.forEach(uniq => {
-            sendObj.categories[uniq] = actions.filter(action => action.category === uniq && !action.type);
-            sendObj.chartData[uniq] = _.reduce(actions.filter(action => action.category === uniq && !action.type), function(sum, n) {
+        const sendObj = {expenses: {categories: {}, chartData: {}}, income: {categories: {}}, financeInfo: {}};
+        const arrayOfExpensesCategories = _.sortedUniq(actions.filter(item => !item.type).map(item => item.category));
+        const arrayOfProfitCategories = _.sortedUniq(actions.filter(item => item.type).map(item => item.category));
+        arrayOfExpensesCategories.forEach(uniq => {
+            sendObj.expenses.categories[uniq] = actions.filter(action => action.category === uniq);
+            sendObj.expenses.chartData[uniq] = _.reduce(actions.filter(action => action.category === uniq), function(sum, n) {
                 return sum + n.price;
-            }, 0)
+            }, 0);
+        });
+        arrayOfProfitCategories.forEach(uniq => {
+            sendObj.income.categories[uniq] = actions.filter(action => action.category === uniq);
         });
         sendObj.financeInfo = {
-            consumption: _.reduce(sendObj.chartData, function (result, value) {
+            consumption: _.reduce(sendObj.expenses.chartData, function (result, value) {
                 return result + value;
             }, 0),
-            profit: 100,
+            profit: _.reduce(sendObj.income.categories, function (result, value) {
+                return result + _.reduce(value, function (count, item) {
+                    return count + item.price;
+                }, 0);
+            }, 0),
         }
         res.json(sendObj);
     } catch (e) {

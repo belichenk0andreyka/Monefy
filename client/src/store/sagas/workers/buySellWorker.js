@@ -5,9 +5,8 @@ import { getToken } from 'store/seletors/userSelectors';
 import { getDateRangeSuccess, getActionsSuccess, sendActionSuccess } from 'store/actions/buySellActions';
 import { validateAction } from 'helpers/actionHelper';
 import api from 'api/apiResources';
-import { closeModal } from 'store/actions/uiActions';
-import {MODAL_TYPES} from "../../../constants/constants";
-import {notificationHelper} from "../../../helpers/notifications";
+import { closeAllModal } from 'store/actions/uiActions';
+import { notificationHelper } from 'helpers/notifications';
 
 export function* getActions (action) {
     const token = yield select(state => getToken(state))
@@ -33,7 +32,7 @@ export function* sendAction (action) {
         const typeAction = type ? 'income' : 'expense';
         if (request.data._id) {
             yield put(sendActionSuccess(request.data))
-            yield put(closeModal(MODAL_TYPES.ACTION_MODAL_CREATE));
+            yield put(closeAllModal());
             notificationHelper(
                 'Success',
                 `You have successfully added ${typeAction}`,

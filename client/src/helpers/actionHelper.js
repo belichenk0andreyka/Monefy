@@ -1,3 +1,4 @@
+import React from 'react';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 
@@ -65,3 +66,22 @@ export const getDefaultMonth = () => ({
     startDate: moment().set('date', 1).format(),
     finishDate: moment().set('date', moment().daysInMonth()).format(),
 })
+
+export const parseNumber = (number) => {
+    if (Number.isInteger(number)) {
+        return (
+            <span>
+                <span className='first-number-favorites'>{number}.</span>
+                <span className='second-number-favorites'>00</span>
+            </span>
+        )
+    } else {
+        const splitNumber = `${number}`.split(".");
+        return (
+            <span>
+                <span className='first-number-favorites'>{Math.trunc(number)}.</span>
+                <span className='second-number-favorites'>{splitNumber[splitNumber.length - 1]}</span>
+            </span>
+        )
+    }
+}

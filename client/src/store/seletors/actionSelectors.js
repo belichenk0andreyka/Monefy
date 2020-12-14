@@ -6,7 +6,11 @@ export const getDateRange = createSelector(
     getActionReducer,
     state => state.dateRange,
 );
-export const getActionsData = createSelector(
+export const getActionsExpensesData = createSelector(
     getActionReducer,
-    state => state.actionsData,
+    state => state.actionsData.expenses,
+);
+export const getActionsFinancialData = createSelector(
+    getActionReducer,
+    state => state.actionsData.financeInfo,
 );

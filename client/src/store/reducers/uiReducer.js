@@ -1,6 +1,6 @@
 import { filter, omitBy, get } from 'lodash';
 
-import { OPEN_MODAL, CLOSE_MODAL } from 'store/actions/uiActions';
+import { OPEN_MODAL, CLOSE_MODAL, CLOSE_ALL_MODALS } from 'store/actions/uiActions';
 
 const initialState = {
     modal: {
@@ -15,6 +15,11 @@ const uiReducer = (state = initialState, action) => {
             return openModal(state, action);
         case CLOSE_MODAL:
             return closeModal(state, action);
+        case CLOSE_ALL_MODALS:
+            return {
+                ...state,
+                modal: initialState.modal,
+            };
         default:
             return state
     }
