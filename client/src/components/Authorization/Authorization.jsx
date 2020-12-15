@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 
 import InputAuth from 'components/InputAuth';
 import { validateInputsAuth } from 'helpers/registerHelper';
@@ -10,9 +11,10 @@ import { notificationHelper } from 'helpers/notifications';
 const propTypes = {
     authUser: PropTypes.func.isRequired,
     authUserGoogle: PropTypes.func.isRequired,
+    authUserFacebook: PropTypes.func.isRequired,
 };
 
-const Authorization = ({ authUser, authUserGoogle }) => {
+const Authorization = ({ authUser, authUserGoogle, authUserFacebook }) => {
     const initialState = { email: '', password: '' };
     const initialValidatesState = { email: true, password: true, isValid: true, allIsValid: true };
     const [inputsValues, setInputsValues] = React.useState(initialState);
@@ -37,6 +39,10 @@ const Authorization = ({ authUser, authUserGoogle }) => {
     }
     const failureGoogle = (error) => {
         console.log(error);
+    }
+    const responseFacebook = (response) => {
+        console.log(response);
+        authUserFacebook({accessToken: response.accessToken, userID: response.userID})
     }
     return(
         <div className='auth'>
@@ -72,6 +78,11 @@ const Authorization = ({ authUser, authUserGoogle }) => {
                     onFailure={failureGoogle}
                     cookiePolicy={'single_host_origin'}
                 />
+                <FacebookLogin
+                    appId="199714928446332"
+                    autoLoad={false}
+                    fields="name,email,picture"
+                    callback={responseFacebook} />
             </div>
             <div className='auth-buttons__container'>
                 <div className='buttons-container'>
