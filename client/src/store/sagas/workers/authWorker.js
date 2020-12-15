@@ -16,7 +16,32 @@ export function* authWorker (action) {
             Cookies.set('token', request.data.token);
             notificationHelper(
                 'Success',
-                'Registration completed successfully',
+                'Authorization completed successfully',
+                'success'
+            );
+            history.push('/main');
+        } else {
+            notificationHelper('Error', request.data.msg,'error');
+        }
+    } catch (error) {
+        notificationHelper(
+            'Error',
+            'This action is not available now, please try again later',
+            'error'
+        );
+    }
+}
+
+export function* authWorkerGoogle (action) {
+    const { tokenId } = action.payload;
+    try {
+        const request = yield call(() => api.authorization.authGoogle({tokenId}));
+        if (request.data.token) {
+            yield put(authUserSuccess(request.data.token));
+            Cookies.set('token', request.data.token);
+            notificationHelper(
+                'Success',
+                'Authorization completed successfully',
                 'success'
             );
             history.push('/main');

@@ -30,7 +30,6 @@ router.post('/',
 
             // See if user exists
             if (user) {
-                // return res.status(400).json({ msg: 'User already exists' });
                 return res.status(200).json({ msg: 'User already exists' });
             }
 
@@ -46,11 +45,7 @@ router.post('/',
             await user.save()
 
             //Return jsonwebtoken
-            const payload = {
-                user: {
-                    id: user.id
-                }
-            };
+            const payload = { user: { id: user.id } };
 
             jwt.sign(
                 payload,
@@ -61,8 +56,6 @@ router.post('/',
                     res.json({ token });
                 }
             );
-            // res.send('User registered');
-
         }catch (e) {
             console.log(e.message);
             res.status(500).send('Server error');

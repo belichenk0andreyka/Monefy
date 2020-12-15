@@ -5,6 +5,9 @@ const auth = require('../../middleware/auth');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
+
+const client = new OAuth2Client('535101318047-2hk9cabc41oq6ka4qk33mipnn5ntlfik.apps.googleusercontent.com');
 
 const User = require('../../models/User');
 
@@ -77,5 +80,39 @@ router.post('/',
             res.status(500).send('Server error');
         }
     });
+
+// @route   POST api/auth/google
+// @desc    Authenticate or register user & get token
+// @access  Public
+router.post('/google', async (req, res) => {
+    const { tokenId } = req.body;
+
+    const googleClient = await client.verifyIdToken({ idToken: tokenId, audience: '535101318047-2hk9cabc41oq6ka4qk33mipnn5ntlfik.apps.googleusercontent.com' })
+    const { email, name, email_verified } = googleClient.payload;
+    if (email_verified) {
+        let user = await User.findOne({ email });
+        if (!user) {
+            user = new User({
+                name,
+                email,
+            });
+            await user.save();
+        }
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+        jwt.sign(
+            payload,
+            config.get('jwtSecret'),
+            {expiresIn: 360000},
+            (err, token) => {
+                if (err) throw err;
+                res.json({token});
+            }
+        );
+    }
+});
 
 module.exports = router;
