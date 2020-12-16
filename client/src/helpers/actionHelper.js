@@ -41,10 +41,10 @@ export const getDateRangeArray = (rangeDate) => {
         const minRangeYear = moment(rangeDate.minDate).year();
         const maxRangeYear = moment(rangeDate.maxDate).year();
         if (minRangeYear !== maxRangeYear) {
-            minDate = moment(`01-01-${maxRangeYear}`);
+            minDate = moment(`01.01.${maxRangeYear}`, "DD.MM.YYYY");
             maxDate = moment(rangeDate.maxDate).set('date', moment(rangeDate.maxDate).daysInMonth());
         } else if (minRangeYear === maxRangeYear) {
-            minDate = moment(`01-${minRangeMonth}-${minRangeYear}`);
+            minDate = moment(`01.${minRangeMonth}.${minRangeYear}`, "DD.MM.YYYY");
             maxDate = moment(rangeDate.maxDate).set('date', moment(rangeDate.maxDate).daysInMonth());
         }
         const months = [];
@@ -58,7 +58,11 @@ export const getDateRangeArray = (rangeDate) => {
         }
         return months;
     } else {
-        return [];
+        return [{
+            startDate: moment().set('date', 1).format(),
+            finishDate: moment().set('date', moment().daysInMonth()).format(),
+            dateFormat: moment().set('date', 1).format('MMMM'),
+        }];
     }
 };
 

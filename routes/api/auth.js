@@ -6,6 +6,8 @@ const config = require('config');
 const { check, validationResult } = require('express-validator/check');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
+const fetch = require('node-fetch');
+const { PROVIDER_TYPES } = require('../../constants/constants');
 
 const client = new OAuth2Client('535101318047-2hk9cabc41oq6ka4qk33mipnn5ntlfik.apps.googleusercontent.com');
 
@@ -41,9 +43,8 @@ router.post('/',
         }
 
         const { email, password } = req.body;
-
         try {
-            let user = await User.findOne({email});
+            let user = await User.findOne({ email, provider: PROVIDER_TYPES.USER });
 
             // See if user exists
             if (!user) {
@@ -90,11 +91,12 @@ router.post('/google', async (req, res) => {
     const googleClient = await client.verifyIdToken({ idToken: tokenId, audience: '535101318047-2hk9cabc41oq6ka4qk33mipnn5ntlfik.apps.googleusercontent.com' })
     const { email, name, email_verified } = googleClient.payload;
     if (email_verified) {
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ email, provider: PROVIDER_TYPES.GOOGLE });
         if (!user) {
             user = new User({
                 name,
                 email,
+                provider: PROVIDER_TYPES.GOOGLE,
             });
             await user.save();
         }
@@ -112,6 +114,45 @@ router.post('/google', async (req, res) => {
                 res.json({token});
             }
         );
+    }
+});
+
+// @route   POST api/auth/facebook
+// @desc    Authenticate or register user & get token
+// @access  Public
+router.post('/facebook', async (req, res) => {
+    const { accessToken, userID } = req.body;
+    let urlGraphFacebook = `https://graph.facebook.com/v2.11/${userID}/?fields=name,email&access_token=${accessToken}`;
+    const facebookResponse = await fetch(urlGraphFacebook, {
+        method: 'GET'
+    });
+    const facebookParse = await facebookResponse.json();
+    if (facebookParse.email) {
+        let user = await User.findOne({ email: facebookParse.email, provider: PROVIDER_TYPES.FACEBOOK });
+        if (!user) {
+            user = new User({
+                name: facebookParse.name,
+                email: facebookParse.email,
+                provider: PROVIDER_TYPES.FACEBOOK,
+            });
+            await user.save();
+        }
+        const payload = {
+            user: {
+                id: user.id
+            }
+        };
+        jwt.sign(
+            payload,
+            config.get('jwtSecret'),
+            {expiresIn: 360000},
+            (err, token) => {
+                if (err) throw err;
+                res.json({token});
+            }
+        );
+    } else {
+        return res.status(200).json({ msg: 'Facebook without email' });
     }
 });
 

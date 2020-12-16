@@ -17,6 +17,11 @@ const UserSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now,
+    },
+    provider: {
+        type: String,
+        default: 'user',
+        required: true,
     }
 });
 

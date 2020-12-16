@@ -8,4 +8,7 @@ export default class Authorization extends Base {
     authGoogle (data) {
         return this.apiClient.post(config.auth_google, data, {});
     }
+    authFacebook (data) {
+        return this.apiClient.post(config.auth_facebook, data, {});
+    }
 }

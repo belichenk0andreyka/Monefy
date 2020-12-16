@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import InputAuth from 'components/InputAuth';
+import SocialButtonAuth from 'components/SocialButtonAuth';
 import { validateInputs } from 'helpers/registerHelper';
 import { notificationHelper } from 'helpers/notifications';
 
@@ -66,6 +67,7 @@ const Registration = ({ registerUser }) => {
                     tooltipMessage='Password must contain figures and letters'
                 />
             </div>
+            <SocialButtonAuth />
             <div className='auth-buttons__container'>
                 <div className='buttons-container'>
                     <Link className='button-container__btn' to='/'>Login</Link>

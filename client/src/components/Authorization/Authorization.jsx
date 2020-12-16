@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import GoogleLogin from 'react-google-login';
 
 import InputAuth from 'components/InputAuth';
+import SocialButtonAuth from 'components/SocialButtonAuth';
 import { validateInputsAuth } from 'helpers/registerHelper';
 import { notificationHelper } from 'helpers/notifications';
 
 const propTypes = {
     authUser: PropTypes.func.isRequired,
-    authUserGoogle: PropTypes.func.isRequired,
 };
 
-const Authorization = ({ authUser, authUserGoogle }) => {
+const Authorization = ({ authUser }) => {
     const initialState = { email: '', password: '' };
     const initialValidatesState = { email: true, password: true, isValid: true, allIsValid: true };
     const [inputsValues, setInputsValues] = React.useState(initialState);
@@ -32,12 +31,6 @@ const Authorization = ({ authUser, authUserGoogle }) => {
         isValid: inputsValidate.isValid,
         allIsValid: inputsValidate.allIsValid
     });
-    const responseGoogle = (response) => {
-        authUserGoogle({tokenId: response.tokenId});
-    }
-    const failureGoogle = (error) => {
-        console.log(error);
-    }
     return(
         <div className='auth'>
             <img src="src/assets/logo.png" className='auth-logo'/>
@@ -64,15 +57,7 @@ const Authorization = ({ authUser, authUserGoogle }) => {
                     tooltipMessage='Enter password'
                 />
             </div>
-            <div>
-                <GoogleLogin
-                    clientId="535101318047-2hk9cabc41oq6ka4qk33mipnn5ntlfik.apps.googleusercontent.com"
-                    buttonText="Login"
-                    onSuccess={responseGoogle}
-                    onFailure={failureGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />
-            </div>
+            <SocialButtonAuth />
             <div className='auth-buttons__container'>
                 <div className='buttons-container'>
                     <Link className='button-container__btn' to='/registration'>Register</Link>
