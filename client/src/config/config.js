@@ -5,6 +5,7 @@ export default {
     auth_facebook: '/api/auth/facebook',
     actions: '/api/actions',
     rangeDate: '/api/actions/rangeDate',
+    exchange: 'https://api.privatbank.ua/p24api/exchange_rates?json&date=',
     development: {
         apiPrefix: 'http://localhost:5000',
     },

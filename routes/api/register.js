@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator/check');
+const { PROVIDER_TYPES } = require('../../constants/constants');
 
 const User = require('../../models/User');
 
@@ -26,7 +27,7 @@ router.post('/',
         const { name, email, password } = req.body;
 
         try{
-            let user = await User.findOne({ email });
+            let user = await User.findOne({ email, provider: PROVIDER_TYPES.USER });
 
             // See if user exists
             if (user) {

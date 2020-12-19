@@ -1,10 +1,13 @@
-import React from "react";
+import React from 'react';
+import ExchangeRates from '../ExchangeRates';
 
 import './rightSidebar.less'
 
 const RightSidebar = () => {
     return (
-        <div className='rightSidebar'>RightSidebar</div>
+        <div className='rightSidebar'>
+            <ExchangeRates />
+        </div>
     );
 }
 
